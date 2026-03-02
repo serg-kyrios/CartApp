@@ -30,7 +30,6 @@ export default function CartScreen() {
         setLoading(false);
       });
   }, []);
-
   const handleAddToCart = (product: Product) => {
     setCart((prevCart) => {
       const existing = prevCart.find((item) => item.id === product.id);
@@ -46,6 +45,23 @@ export default function CartScreen() {
       return [...prevCart, { ...product, quantity: 1 }];
     });
   };
+  const handleDecrease = (product: Product) => {
+    setCart((prevCart) => {
+      const existing = prevCart.find((item) => item.id === product.id);
+
+      if (!existing) return prevCart;
+
+      if (existing.quantity === 1) {
+        return prevCart.filter((item) => item.id !== product.id);
+      }
+
+      return prevCart.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      );
+    });
+  };
 
   if (loading) {
     return (
@@ -54,24 +70,34 @@ export default function CartScreen() {
       </View>
     );
   }
-
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const getQuantity = (productId: number) => {
+    const item = cart.find((item) => item.id === productId);
+    return item ? item.quantity : 0;
+  };
   return (
     <View style={{ flex: 1 }}>
-      <Text style={{ fontSize: 18, margin: 10 }}>
-        Items in cart: {cart.length}
+      <Text style={{ fontSize: 18, margin: 20 }}>
+        Items in cart: {totalItems}
       </Text>
 
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <CartItem
-            title={item.title}
-            price={item.price}
-            image={item.image}
-            onAddToCart={() => handleAddToCart(item)}
-          />
-        )}
+        renderItem={({ item }) => {
+          const quantity = getQuantity(item.id);
+
+          return (
+            <CartItem
+              title={item.title}
+              price={item.price}
+              image={item.image}
+              quantity={quantity}
+              onAddToCart={() => handleAddToCart(item)}
+              onDecrease={() => handleDecrease(item)}
+            />
+          );
+        }}
       />
     </View>
   );

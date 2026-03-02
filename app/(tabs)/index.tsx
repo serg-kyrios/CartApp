@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import CartItem from "@/components/CartItem";
+import CartItem from "@/src/components/screens/CartScreen";
 
 type Product = {
   id: number;
@@ -46,7 +46,10 @@ export default function CartScreen() {
             : item,
         );
       }
-
+      const getQuantity = (productId: number) => {
+        const item = cart.find((item) => item.id === productId);
+        return item ? item.quantity : 0;
+      };
       return [...prevCart, { ...product, quantity: 1 }];
     });
   };
@@ -73,6 +76,7 @@ export default function CartScreen() {
             title={item.title}
             price={item.price}
             image={item.image}
+            quantity={item.quantity}
             onAddToCart={() => handleAddToCart(item)}
           />
         )}

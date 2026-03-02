@@ -6,10 +6,19 @@ type Props = {
   title: string;
   price: number;
   image: string;
+  quantity: number;
   onAddToCart: () => void;
+  onDecrease: () => void;
 };
 
-export default function CartItem({ title, price, image, onAddToCart }: Props) {
+export default function CartItem({
+  title,
+  price,
+  image,
+  onAddToCart,
+  quantity,
+  onDecrease,
+}: Props) {
   return (
     <View style={styles.card}>
       <Image source={{ uri: image }} style={styles.image} />
@@ -18,9 +27,42 @@ export default function CartItem({ title, price, image, onAddToCart }: Props) {
         <Text style={styles.title} numberOfLines={2}>
           {title}
         </Text>
+
         <Text style={styles.price}>${price}</Text>
 
-        <AddToCartButton onPress={onAddToCart} quantity={1} />
+        {quantity > 0 ? (
+          <View
+            style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}
+          >
+            <TouchableOpacity
+              onPress={onDecrease}
+              style={{
+                padding: 8,
+                backgroundColor: "#eee",
+                borderRadius: 6,
+              }}
+            >
+              <Text style={{ fontSize: 18 }}>➖</Text>
+            </TouchableOpacity>
+
+            <Text style={{ marginHorizontal: 12, fontWeight: "bold" }}>
+              {quantity}
+            </Text>
+
+            <TouchableOpacity
+              onPress={onAddToCart}
+              style={{
+                padding: 8,
+                backgroundColor: "#eee",
+                borderRadius: 6,
+              }}
+            >
+              <Text style={{ fontSize: 18 }}>➕</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <AddToCartButton onPress={onAddToCart} />
+        )}
       </View>
     </View>
   );
