@@ -1,10 +1,45 @@
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  StatusBar,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import { useState } from "react";
 import CartItem from "@/components/CartItem";
 
 export default function CartScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Cart Screen</Text>
-    </View>
-  );
+  type Product = {
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+  };
+
+  type CartItemType = {
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+    quantity: number;
+  };
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState<CartItemType[]>([]);
+
+  const handleAddToCart = (product: Product) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      }
+
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+  };
 }
