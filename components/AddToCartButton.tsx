@@ -2,13 +2,7 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { CartScreen } from "@/src/components/screens/CartScreen";
-//
-type Props = {
-  onAddToCart: () => void;
-  disabled?: boolean;
-  quantity?: number;
-};
+
 interface AddToCartButtonProps {
   onPress: () => void;
   disabled?: boolean;
@@ -16,20 +10,17 @@ interface AddToCartButtonProps {
 }
 
 export default function AddToCartButton({
+  onPress,
   disabled = false,
   quantity,
 }: AddToCartButtonProps) {
   return (
     <TouchableOpacity
       style={[styles.button, disabled && styles.disabled]}
-      onPress={() => {
-        if (!disabled) {
-          onAddToCart();
-        }
-      }}
+      onPress={onPress}
       disabled={disabled}
     >
-      <LinearGradient colors={["#6BFF9C", "#8EA8FF"]} style={styles.gradient}>
+      <LinearGradient colors={["#FF6B6B", "#C7FF8E"]} style={styles.gradient}>
         <Ionicons name="cart-outline" size={18} color="white" />
         <Text style={styles.text}>
           {quantity ? `Add ${quantity}` : "Add to Cart"}
@@ -48,6 +39,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,
+    width: "70%",
   },
   gradient: {
     flexDirection: "row",

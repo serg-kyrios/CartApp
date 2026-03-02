@@ -1,4 +1,6 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import AddToCartButton from "@/components/AddToCartButton";
+//import { CartScreen } from "@/src/components/screens/CartScreen";
 
 type Props = {
   title: string;
@@ -18,9 +20,7 @@ export default function CartItem({ title, price, image, onAddToCart }: Props) {
         </Text>
         <Text style={styles.price}>${price}</Text>
 
-        <TouchableOpacity style={styles.button} onPress={onAddToCart}>
-          <Text style={{ color: "white" }}>Add to Cart</Text>
-        </TouchableOpacity>
+        <AddToCartButton onPress={onAddToCart} quantity={1} />
       </View>
     </View>
   );
