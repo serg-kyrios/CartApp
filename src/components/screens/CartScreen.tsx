@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import CartItem from "@/components/CartItem";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
 
 type Product = {
   id: number;
   title: string;
   price: number;
   image: string;
+  cart: number;
 };
 
 type CartItemType = Product & {
@@ -17,6 +18,8 @@ export default function CartScreen() {
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItemType[]>([]);
   const [loading, setLoading] = useState(true);
+  // const cart = useCartStore((state) => state.cart);
+  // const removeFromCart = useCartStore((state) => state.removeFromCart);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -77,7 +80,9 @@ export default function CartScreen() {
   };
   return (
     <View style={{ flex: 1 }}>
-      <Text style={{ fontSize: 18, margin: 20 }}>
+      <Text
+        style={{ fontSize: 18, margin: 20, fontWeight: "bold", color: "green" }}
+      >
         Items in cart: {totalItems}
       </Text>
 
